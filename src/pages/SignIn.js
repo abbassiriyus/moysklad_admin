@@ -32,9 +32,9 @@ export default class SignIn extends Component {
 
 function loginIn() {
   var data =new FormData()
-  data.append("phone",document.querySelector("#email").value)
+  data.append("login",document.querySelector("#email").value)
   data.append("password",document.querySelector("#parol").value)
-  axios.post(`${url}/api/login`,data).then(res=>{
+  axios.post(`${url}/auth/login`,data).then(res=>{
     sessionStorage.setItem('token',res.data.access)
    setTimeout(() => {
     window.location.reload()
