@@ -183,7 +183,7 @@ function Sidenav({ color }) {
             >
               {dashboard}
             </span>
-            <span className="label">Dashboard</span>
+            <span className="label">Company</span>
           </NavLink>
         </Menu.Item>
         <Menu.Item key="2">
@@ -196,51 +196,9 @@ function Sidenav({ color }) {
             >
               {tables}
             </span>
-            <span className="label">Users</span>
+            <span className="label">Category</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="3">
-          <NavLink to="/Products">
-            <span
-              className="icon"
-              style={{
-                background: page === "Products" ? color : "",
-              }}
-            >
-              {Products}
-            </span>
-            <span className="label">Products</span>
-          </NavLink>
-        </Menu.Item>
-        <Menu.Item key="4">
-          <NavLink to="/Construction">
-            <span
-              className="icon"
-              style={{
-                background: page === "Construction" ? color : "",
-              }}
-            >
-              {Products}
-            </span>
-            <span className="label">Construction</span>
-          </NavLink>
-        </Menu.Item>
-        <Menu.Item key="5">
-          <NavLink to="/zakaz">
-            <span
-              className="icon"
-              style={{
-                background: page === "zakaz" ? color : "",
-              }}
-            >
-              {zakaz}
-            </span>
-            <span className="label">Zakaz</span>
-          </NavLink>
-        </Menu.Item>
-      
-    
-      
         <Menu.Item key="6">
           <NavLink to="/profile">
             <span
@@ -251,7 +209,7 @@ function Sidenav({ color }) {
             >
               {profile}
             </span>
-            <span className="label">Profile</span>
+            <span className="label">Qo`shimcha</span>
           </NavLink>
         </Menu.Item>
       </Menu>

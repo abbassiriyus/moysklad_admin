@@ -1,327 +1,261 @@
-import {
-  Row,
-  Col,
-  Card,
-  Radio,
-
-  Table,
-  Button,
-  Avatar,
-  Typography,
-  Input,
-  Modal,
-  Image,
-
-} from "antd";
-
-import axios from "axios";
-import { useEffect, useState } from "react";
-
-import url from "./host.js";
-import "./user.css";
-
-
-
-
-
-function newUser() {
-  document.querySelector('#modalMaybe').style="background-color:blue"
-}
-function Tables() {
-
-  var [data,setData]=useState([])
-  var [userModal,setUserModal] =useState(false)
-  var [userId,setUserId]=useState()
-
-
-  const onChange = (e) => console.log(`radio checked:${e.target.value}`);
-const columns = [
-  {
-    title: "id",
-    dataIndex: "id",
-    key: "id",
-    width: "12%",
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import url from './host';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Modal, message } from 'antd';
+const formItemLayout = {
+  labelCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 6,
+    },
   },
-  {
-    title: "image",
-    dataIndex: "image",
-    render: (_,item)=><Image src={item.image} style={{width:'40px',height:'40px'}} />,
-    width: "12%",
+  wrapperCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 14,
+    },
   },
-  {
-    title: "name",
-    dataIndex: "name",
-    width: "12%",
-  },
-  {
-    title: "address",
-    dataIndex: "address",
-    width: "12%",
-  },
-   {
-    title: "city",
-    dataIndex: "city",
-    width: "12%",
-  },
-  {
-    title: "country",
-    dataIndex: "country",
-    width: "12%",
-  },
-  
-  {
-    title: "username",
-    key: "username",
-    dataIndex: "username",
-    width: "12%",
-  },
-  {
-    title: "phone",
-    key: "phone",
-    dataIndex: "phone",
-    width: "12%",
-  },
-  {
-    title: "email",
-    key: "email",
-    dataIndex: "email",
-    width: "12%",
-  },
-  {
-    title: "password",
-    key: "password",
-    dataIndex: "password",
-    width: "12%",
-  },
-  {
-    title: "delete",
-    key: "delete",
-    render: (_,item)=><Radio.Button onClick={()=>{DeleteData(item.id)}} >delete</Radio.Button>,
-    width: "12%",
-  },
-  {
-    title: "edit",
-    key: "edit",
-    render: (_,item)=><Radio.Button onClick={()=>{UserEditOpen(item)}}>edit</Radio.Button>,
-    width: "10%",
-  },
+};
+export default function Users() {
 
-]; 
+var [data, setData]=useState([])
+const [isModalOpen, setIsModalOpen] = useState(false);
+const showModal = () => {
+  setIsModalOpen(true);
+};
+var [file1,setFile]=useState()
 
-function UserEditOpen(item){
-setUserModal(true)
-setUserId(item.id)
-setTimeout(() => {
-document.querySelector("#name1").value=item.name
-document.querySelector("#lastname1").value=item.lastname
-document.querySelector("#username1").value=item.username
-document.querySelector("#phone1").value=item.phone
-document.querySelector("#email1").value=item.email
-document.querySelector("#about_me1").value=item.about_me
-document.querySelector("#address1").value=item.address
-document.querySelector("#country1").value=item.country
-document.querySelector("#city1").value=item.city
-document.querySelector("#password1").value=item.password
-}, 1000);
-}
 
-function putUser(){
-  var data=new FormData()
-  data.append("name",document.querySelector("#name1").value)
-  data.append("lastname",document.querySelector("#lastname1").value)
-  data.append("username",document.querySelector("#username1").value)
-  data.append("phone",document.querySelector("#phone1").value)
-  data.append("email",document.querySelector("#email1").value)
-  data.append("about_me",document.querySelector("#about_me1").value)
-  data.append("address",document.querySelector("#address1").value)
-  data.append("skitka",document.querySelector("#country1").value)
-  data.append("city",document.querySelector("#city1").value)
-  data.append("password",document.querySelector("#password1").value)
-axios.put(`${url}/api/users/${userId}`,data).then(res=>{
-alert("Сохранено в нашей базе данных")
-setUserModal(false)
-axios.get(`${url}/api/users`).then(res=>{
-  setData(res.data)
-  console.log(res.data);
+const handleOk = () => {
+var data=new FormData()
+console.log(formItemLayout);
+data.append("category_id",document.querySelector('.InputcategoryId').value )
+data.append("subcategory", 0)
+
+data.append("category_title",document.querySelector('.InputCategoryTitle').value )
+data.append("image", document.querySelector('#modal_data_file').files[0])
+
+axios.post(`${url}/api/category`,data).then(res=>{
+
+message.success("Category yaratildi")
+handleCancel()
+getData()
+}).catch(err=>{
+message.error("xato qayta urunib ko`ring")
+handleCancel()
 })
-})
-.catch(err=>{
-  alert("Недостаточно информации")
-})
-}
+};
 
+const handleCancel = () => {
+  setIsModalOpen(false);
+};
 
-function DeleteData(key){
-  axios.delete(`${url}/api/users/${key}`).then(res=>{
-    alert("Удалено")
-    axios.get(`${url}/api/users`).then(res1=>{
-      setData(res1.data)
-    })
-  
+function getData() {
+  axios.get(`${url}/api/category`).then(res=>{
+    setData(res.data)
+    console.log(res.data);
   }).catch(err=>{
-    alert("Не удалось удалить")
+    message.error("don`t get category")
   })
 }
-function postData() {
+
+const [isModalOpen1, setIsModalOpen1] = useState(false);
+const [isModalOpen2, setIsModalOpen2] = useState(false);
+var [selectid,setSelectId]=useState(0)
+
+const handleOk1 = () => {
   var data=new FormData()
-  data.append("name",document.querySelector("#name").value)
-  data.append("lastname",document.querySelector("#lastname").value)
-  data.append("username",document.querySelector("#username").value)
-  data.append("phone",document.querySelector("#phone").value)
-  data.append("email",document.querySelector("#email").value)
-  data.append("about_me",document.querySelector("#about_me").value)
-
-  data.append("password",document.querySelector("#password").value)
-axios.post(`${url}/api/users`,data).then(res=>{
-alert("Сохранено в нашей базе данных")
-axios.get(`${url}/api/users`).then(res=>{
-  setData(res.data)
-})
-})
-.catch(err=>{
-  alert("Недостаточно информации")
-})
-
-}
-
-function all1(id) {
-  axios.get(`${url}/api/users`).then(res=>{
-    if(id==0){
-    setData(res.data)
-    }else{
-  var pover=[]
-  var user=[]
-axios.get(`${url}/api/user_povar`).then(res2=>{
-
-for (let i = 0; i < res.data.length; i++) {
-var userb=true
-for (let j = 0;j<res2.data.length; j++) {
-if(res.data[i].id===res2.data[j].user_id){
-userb=false
-}
-}
-if(userb){
-user.push(res.data[i])
-}else{
-pover.push(res.data[i])
-}
-} 
-if(id==1){
-setData(pover)
+  console.log(formItemLayout);
+  data.append("category_id",document.querySelector('.InputcategoryId1').value )
+  data.append("subcategory", 0)
+  
+  data.append("category_title",document.querySelector('.InputCategoryTitle1').value )
+  if(document.querySelector('#modal_data_file1').files[0]){
+   data.append("image", document.querySelector('#modal_data_file1').files[0])  
+  }else{
+    data.append("image", selectid.image)
   }
-  if(id==2){
-setData(user)
-  }
-})
  
-    }
+  
+  axios.put(`${url}/api/category/${selectid.id}`,data).then(res=>{
+  
+  message.success("Category o`zgartitildi")
+  handleCancel1()
+  getData()
+  }).catch(err=>{
+  message.error("xato qayta urunib ko`ring")
+  handleCancel1()
   })
-}
+};
+const handleCancel1 = () => {
+  setIsModalOpen1(false);
+};
 
-useEffect(()=>{
-  axios.get(`${url}/api/users`).then(res=>{
-    setData(res.data)
-  })
-},[])
+const handleOk2 = () => {
+  axios.delete(`${url}/api/category/${selectid}`).then(res=>{
+getData()
+handleCancel2()
+  }).catch(err=>{
+message.error("Category not delete")
+handleCancel2()  
+})
+  setIsModalOpen2(false);
+};
+const handleCancel2 = () => {
+  setIsModalOpen2(false);
+};
+
+
+ useEffect(()=>{
+  getData()
+ },[])
+
+
 
   return (
     <div>
-      <div className="tabled">
-        <Row gutter={[24, 0]}>
-          <Col xs="24" xl={24}>
-            <Card
-              bordered={false}
-              className="criclebox tablespace mb-24"
-              title="All users"
-              extra={
-                <div>
-                  <Radio.Group onChange={onChange} defaultValue="a">
+<Button type="primary" onClick={showModal}>
+      Create Category
+      </Button>
 
-                     <Radio.Button onClick={()=>all1(0)} value="a1">Все</Radio.Button> 
-                     <Radio.Button onClick={()=>all1(1)} value="a2">Шеф-повар</Radio.Button> 
-                     <Radio.Button onClick={()=>all1(2)} value="a3">Пользователь</Radio.Button> 
-                    <Radio.Button onClick={()=>{document.querySelector("#modalMaybe").style="display:flex"}} value="b">create</Radio.Button>
+<div className="category_cards">
+ {data.map((item,key)=>{
+ return <div className="category_card">
+    <img src={item.image} alt="no image" />
+    <h3 className="title">{item.category_title}</h3>
+    <p className='id'>{item.category_id}</p>
+   <div className='icons'><DeleteOutlined onClick={()=>{setSelectId(item.id);setIsModalOpen2(true)}} style={{cursor:'pointer'}} /> <EditOutlined style={{cursor:'pointer'}} onClick={()=>{setSelectId(item);setIsModalOpen1(true)}}  /></div> 
+  </div> 
+})}
+</div>
 
-                  </Radio.Group>
-                </div>
-              }
+
+<Modal title="Create Category" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Form
+    {...formItemLayout}
+    variant="filled"
+    style={{
+      maxWidth: 600,
+    }}
+  >
+    <Form.Item
+      label="categoryId"
+      name="InputcategoryId"
+      rules={[
+        {
+          required: true,
+          message: 'Iltimos Category IDni kiriting!',
+        },
+      ]}
+    >
+      <Input className='InputcategoryId' />
+    </Form.Item>
+
+
+    <Form.Item
+      label="Category Title"
+      name="InputcategoryTitle"
+      rules={[
+        {
+          required: true,
+          message: 'Iltimos linkni kititing!',
+        },
+      ]}
+    >
+      <Input className='InputCategoryTitle' />
+    </Form.Item>
+    <Form.Item label="Image" valuePropName="fileList">
+    <div className='file_input' listType="picture-card"> 
+    <input type="file" className='get_datainput' id="modal_data_file" />
+            <button
+              style={{
+                border: 0,
+                background: 'none',
+              }}
+              type="button"
             >
-              <div className="table-responsive">
-                <Table
-                  columns={columns}
-                  dataSource={data}
-                  pagination={false}
-                  className="ant-border-space"
-                />
+              <PlusOutlined />
+              <div
+                style={{
+                  marginTop: 8,
+                }}
+              >
+                Upload
               </div>
-            </Card>
-          </Col>
-        </Row>
-
-
-        <div id="modalMaybe" className="Modal">
-        <div className="modalMaybe" style={{position:'relative'}}  >
-          <div className="twoOneModal">
-            <div className="one">
-          <br /><label htmlFor="name">name</label><br />
-          <input type="text" placeholder="name" id="name"/>
-          <br /><label htmlFor="lastname">lastname</label><br />
-          <input type="text" placeholder="lastname" id="lastname"/>
-          <br /><label htmlFor="username">Username</label><br />
-          <input type="text" placeholder="username" id="username"/>
-          <br /><label htmlFor="phone">Phone</label><br />
-          <input type="text" placeholder="phone" id="phone"/>
-         
-          <br /><label htmlFor="email">Email</label><br />
-          <input type="text" placeholder="email" id="email"/>
-         
-            <br /><label htmlFor="address">address</label><br />
-          <input type="text" placeholder="address" id="address"/>
-          <br /><label htmlFor="about_me">about_me</label><br />
-          <input type="text" placeholder="about_me" id="about_me"/>
-        
-          <br /><label htmlFor="password">Password</label><br />
-          <input type="text" placeholder="password" id="password"/>
+            </button>
           </div>
-          <Button className="buttonExit" onClick={()=>{;document.querySelector("#modalMaybe").style="display:none"}}  >x</Button>
-          </div><br />
-          <div className="buttonsSend">
-<Button className="buttonSend" type="primary" onClick={()=>{postData();newUser()}}>Create</Button>
-
-    </div>
-        </div>
-        </div>
-     
-      </div>
-      <Modal title="User" visible={userModal} onOk={()=>putUser()} onCancel={()=>setUserModal(false)}>
-      <div className="one">
-      <br /><label htmlFor="name1">name</label><br />
-      <input type="text" placeholder="name" id="name1"/>
-      <br /><label htmlFor="lastname1">lastname</label><br />
-      <input type="text" placeholder="lastname" id="lastname1"/>
-      <br /><label htmlFor="username1">Username</label><br />
-      <input type="text" placeholder="username" id="username1"/>
-      <br /><label htmlFor="phone1">Phone</label><br />
-      <input type="text" placeholder="phone" id="phone1"/>
-     
-      <br /><label htmlFor="email1">Email</label><br />
-      <input type="text" placeholder="email" id="email1"/>
-    
-    
-      <br /><label htmlFor="address1">address</label><br />
-      <input type="text" placeholder="address" id="address1"/>
-      <br /><label htmlFor="city1">city</label><br />
-      <input type="text" placeholder="city" id="city1"/>
-      <br /><label htmlFor="country1">country</label><br />
-      <input type="text" placeholder="country" id="country1"/>
-      <br /><label htmlFor="about_me1">about_me</label><br />
-      <textarea style={{width:'90%',border:'1px solid grey',paddingTop:'10px',paddingBottom:'10px'}} type="text" placeholder="about_me" id="about_me1"/>
-      <br /><label htmlFor="password1">Password</label><br />
-      <input type="text" placeholder="password" id="password1"/>
-      </div>
+        </Form.Item>
+  </Form>
       </Modal>
-    </div>
-  );
-}
 
-export default Tables;
+      <Modal title="Edit Category" open={isModalOpen1} onOk={handleOk1} onCancel={handleCancel1}>
+      <Form
+    {...formItemLayout}
+    variant="filled"
+    style={{
+      maxWidth: 600,
+    }}
+  >
+    <Form.Item
+      label="categoryId"
+      name="InputcategoryId"
+      rules={[
+        {
+          required: true,
+          message: 'Iltimos Category IDni kiriting!',
+        },
+      ]}
+    >
+      <Input defaultValue={selectid.category_id} className='InputcategoryId1' />
+    </Form.Item>
+
+
+    <Form.Item
+      label="Category Title"
+      name="InputcategoryTitle"
+      rules={[
+        {
+          required: true,
+          message: 'Iltimos linkni kititing!',
+        },
+      ]}
+    >
+      <Input defaultValue={selectid.category_title} className='InputCategoryTitle1' />
+    </Form.Item>
+    <Form.Item label="Image" valuePropName="fileList">
+    <div className='file_input' listType="picture-card"> 
+    <input type="file" className='get_datainput' id="modal_data_file1" />
+            <button
+              style={{
+                border: 0,
+                background: 'none',
+              }}
+              type="button"
+            >
+              <PlusOutlined />
+              <div
+                style={{
+                  marginTop: 8,
+                }}
+              >
+                Upload
+              </div>
+            </button>
+          </div>
+        </Form.Item>
+  </Form>
+      </Modal>
+
+
+      <Modal title="Delete Category" open={isModalOpen2} onOk={handleOk2} onCancel={handleCancel2}>
+        <p>Siz O`chirayapgan ma`lumot sayt uchun axamiyatli bo`lishi mumkin. rostdan ham o`chirasizmi </p>
+      </Modal>
+
+    </div>
+  )
+}
