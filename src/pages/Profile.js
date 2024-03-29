@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, Modal } from 'antd';
+import { Button, Form, Input, Modal, message } from 'antd';
 import url from './host';
 import axios from 'axios';
 const formItemLayout = {
@@ -25,9 +25,6 @@ export default function Profile() {
   const showModal = () => {
     setIsModalOpen(true);
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -49,16 +46,58 @@ var [Best,setBest]=useState([])
 setTop(res.data)
     })
   }
-  function getBest() {
-    axios.get(`${url}/api/best_seller`).then(res=>{
-setBest(res.data)
+  function postTop() {
+    var data=new FormData()
+    data.append('category_id',document.querySelector('.InputcategoryId4').value)
+    axios.post(`${url}/api/top_tovar`,data).then(res=>{
+    getTop()
+    handleCancel()
+    }).catch(err=>{
+message.error("not create top category")
     })
   }
+  function getBest() {
+    axios.get(`${url}/api/best_seller`).then(res=>{
+    setBest(res.data)
+    })
+  }
+  function postBest() {
+    var data=new FormData()
+    data.append('category_id',document.querySelector('.InputcategoryId2').value)
+    axios.post(`${url}/api/best_seller`,data).then(res=>{
+    getBest()
+    handleCancel1()
+    }).catch(err=>{
+message.error("not create top category")
+    })
+  }
+  
+function putTop() {
+  var data=new FormData()
+  data.append('category_id',document.querySelector('.InputcategoryId3').value)
+  axios.put(`${url}/api/top_tovar/${top[0].id}` , data).then(res=>{
+  getTop()
+  handleCancel()
+  }).catch(err=>{
+message.error("not create top category")
+  })
+}
+function putBest() {
+  var data=new FormData()
+    data.append('category_id',document.querySelector('.InputcategoryId1').value)
+    axios.put(`${url}/api/best_seller/${Best[0].id}`,data).then(res=>{
+    getBest()
+    handleCancel1()
+    }).catch(err=>{
+message.error("not create top category")
+    })
+}
+
 
 useEffect(()=>{
   getTop();
   getBest()
-})  
+},[])  
 
   return (
     <div>
@@ -67,7 +106,7 @@ useEffect(()=>{
       {Best.length==0?(<Button type="primary" onClick={showModal}> Eng kop sotilgan categoriyasi
       </Button>):(
         <Form.Item
-      label="categoryId"
+      label="kop sotilganla"
       name="InputcategoryId"
       rules={[
         {
@@ -76,12 +115,13 @@ useEffect(()=>{
         },
       ]}
     >
-      <Input className='InputcategoryId' />
+      <Input defaultValue={Best[0].category_id} className='InputcategoryId1' />
+      <Button onClick={()=>{putBest()}} type="primary" style={{marginTop:'10px'}}>kop sotiladigan</Button>
     </Form.Item>
       )}
        
        <br />
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="Basic Modal" open={isModalOpen} onOk={postBest} onCancel={handleCancel}>
       <Form
     {...formItemLayout}
     variant="filled"
@@ -99,7 +139,7 @@ useEffect(()=>{
         },
       ]}
     >
-      <Input className='InputcategoryId' />
+      <Input className='InputcategoryId2' />
     </Form.Item>
 
 </Form>
@@ -108,7 +148,7 @@ useEffect(()=>{
         Top Tavarlar
       </Button>):(
          <Form.Item
-         label="categoryId"
+         label="Top Tovarlar"
          name="InputcategoryId"
          rules={[
            {
@@ -117,12 +157,13 @@ useEffect(()=>{
            },
          ]}
        >
-         <Input className='InputcategoryId' />
+         <Input  defaultValue={top[0].category_id} className='InputcategoryId3' />
+      <Button style={{marginTop:'10px'}} onClick={()=>putTop()} type="primary">Top Tovarlar</Button>
        </Form.Item>
       )}
      
       <br />
-      <Modal title="Basic Modal" open={isModalOpen1} onOk={handleOk1} onCancel={handleCancel1}>
+      <Modal title="Basic Modal" open={isModalOpen1} onOk={postTop} onCancel={handleCancel1}>
       <Form
     {...formItemLayout}
     variant="filled"
@@ -140,7 +181,7 @@ useEffect(()=>{
         },
       ]}
     >
-      <Input className='InputcategoryId' />
+      <Input className='InputcategoryId4' />
     </Form.Item>
 
 </Form>
