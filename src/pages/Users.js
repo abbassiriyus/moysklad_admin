@@ -2,7 +2,20 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import url from './host';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Modal, message } from 'antd';
+import { Button, Form, Input, Modal, message,Table } from 'antd';
+const columns = [
+  {
+    title: 'id',
+    dataIndex: 'id',
+  },
+  {
+    title: 'name',
+    dataIndex: 'name',
+  },
+];
+
+
+
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -109,7 +122,10 @@ handleCancel2()
 const handleCancel2 = () => {
   setIsModalOpen2(false);
 };
+var [data_all,setAll]=useState([])
+var getallCategory=()=>{
 
+}
 
  useEffect(()=>{
   getData()
