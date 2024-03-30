@@ -123,12 +123,18 @@ const handleCancel2 = () => {
   setIsModalOpen2(false);
 };
 var [data_all,setAll]=useState([])
-var getallCategory=()=>{
 
+var getallCategory=()=>{
+axios.get(`${url}//api/category/all`).then(res=>{
+setAll(res.data)
+}).catch(err=>{
+message.error("not get all category")
+})
 }
 
  useEffect(()=>{
   getData()
+  getallCategory()
  },[])
 
 
@@ -149,8 +155,8 @@ var getallCategory=()=>{
   </div> 
 })}
 </div>
-
-
+<h4>Moysklad dasturidagi barcha kategoriyalar va idlari</h4>
+<Table dataSource={data_all} columns={columns} />
 <Modal title="Create Category" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
       <Form
     {...formItemLayout}

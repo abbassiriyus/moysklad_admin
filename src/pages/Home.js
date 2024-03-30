@@ -75,6 +75,7 @@ handleCancel()
     axios.put(`${url}/api/company/${company[0].id}`,data).then(res=>{
       message.success("Companiya yaratildi")
       handleCancel()
+      getCompany()
     }).catch(err=>{
       message.error("xato qayta urunib ko`ring")
     handleCancel()

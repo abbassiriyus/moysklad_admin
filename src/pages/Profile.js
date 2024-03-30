@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, Modal, message } from 'antd';
 import url from './host';
 import axios from 'axios';
+import Carousel from './Carousel';
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -94,6 +95,7 @@ message.error("not create top category")
 }
 
 
+
 useEffect(()=>{
   getTop();
   getBest()
@@ -162,6 +164,7 @@ useEffect(()=>{
        </Form.Item>
       )}
      
+     <Carousel/>
       <br />
       <Modal title="Basic Modal" open={isModalOpen1} onOk={postTop} onCancel={handleCancel1}>
       <Form

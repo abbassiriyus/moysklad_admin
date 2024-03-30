@@ -67,16 +67,16 @@ function loginIn() {
                 >
                   <Form.Item
                     className="username"
-                    label="Phone"
+                    label="Username"
                     name="email"
                     rules={[
                       {
                         required: true,
-                        message: "Please input your phone!",
+                        message: "Please input your username!",
                       },
                     ]}
                   >
-                    <input style={{width:'100%'}} placeholder="phone" id-="email" />
+                    <input style={{width:'100%'}} placeholder="Username" id="email" />
                   </Form.Item>
 
                   <Form.Item
