@@ -3,6 +3,7 @@ import { Button, Form, Input, Modal, message } from 'antd';
 import url from './host';
 import axios from 'axios';
 import Carousel from './Carousel';
+import MinCon from "./MiniCon.js" 
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -163,7 +164,7 @@ useEffect(()=>{
       <Button style={{marginTop:'10px'}} onClick={()=>putTop()} type="primary">Top Tovarlar</Button>
        </Form.Item>
       )}
-     
+  <MinCon/>
      <Carousel/>
       <br />
       <Modal title="Basic Modal" open={isModalOpen1} onOk={postTop} onCancel={handleCancel1}>
