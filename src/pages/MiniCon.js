@@ -50,9 +50,10 @@ setTop(res.data)
   }
   function postTop() {
     var data=new FormData()
-    data.append('dollor',document.querySelector('.InputcategoryId4').value)
+    data.append('dollor',document.querySelector('.InputcategoryId41').value)
     axios.post(`${url}/api/dolor_course`,data).then(res=>{
     getTop()
+    message.success("bajarildi")
     handleCancel()
     }).catch(err=>{
 message.error("not create top category")
@@ -65,9 +66,10 @@ message.error("not create top category")
   }
   function postBest() {
     var data=new FormData()
-    data.append('token',document.querySelector('.InputcategoryId2').value)
+    data.append('token',document.querySelector('.InputcategoryId21').value)
     axios.post(`${url}/api/tokensklad`,data).then(res=>{
     getBest()
+    message.success("bajarildi")
     handleCancel1()
     }).catch(err=>{
 message.error("not create top category")
@@ -76,9 +78,10 @@ message.error("not create top category")
   
 function putTop() {
   var data=new FormData()
-  data.append('dollor',document.querySelector('.InputcategoryId3').value)
+  data.append('dollor',document.querySelector('.InputcategoryId31').value)
   axios.put(`${url}/api/dolor_course/${top[0].id}` , data).then(res=>{
   getTop()
+  message.success("bajarildi")
   handleCancel()
   }).catch(err=>{
 message.error("not create top category")
@@ -86,9 +89,10 @@ message.error("not create top category")
 }
 function putBest() {
   var data=new FormData()
-    data.append('token',document.querySelector('.InputcategoryId1').value)
+    data.append('token',document.querySelector('.InputcategoryId11').value)
     axios.put(`${url}/api/tokensklad/${Best[0].id}`,data).then(res=>{
     getBest()
+    message.success("bajarildi")
     handleCancel1()
     }).catch(err=>{
 message.error("not create top category")
@@ -118,7 +122,7 @@ useEffect(()=>{
         },
       ]}
     >
-      <Input defaultValue={Best[0].token} className='InputcategoryId1' />
+      <Input defaultValue={Best[0].token} className='InputcategoryId11' />
       <Button onClick={()=>{putBest()}} type="primary" style={{marginTop:'10px'}}>Moysklad token</Button>
     </Form.Item>
       )}
@@ -142,7 +146,7 @@ useEffect(()=>{
         },
       ]}
     >
-      <Input className='InputcategoryId2' />
+      <Input className='InputcategoryId21' />
     </Form.Item>
 
 </Form>
@@ -160,7 +164,7 @@ useEffect(()=>{
            },
          ]}
        >
-         <Input  defaultValue={top[0].dollor} className='InputcategoryId3' />
+         <Input  defaultValue={top[0].dollor} className='InputcategoryId31' />
       <Button style={{marginTop:'10px'}} onClick={()=>putTop()} type="primary">Top Tovarlar</Button>
        </Form.Item>
       )}
@@ -183,7 +187,7 @@ useEffect(()=>{
         },
       ]}
     >
-      <Input className='InputcategoryId4' /> so`m
+      <Input className='InputcategoryId41' /> so`m
     </Form.Item>
 
 </Form>
