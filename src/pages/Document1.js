@@ -13,7 +13,11 @@ setdocumentImage(res.data)
     })
 }
 function Deletedocument(id) {
-axios.delete(`${url}/api/document/${id}`).then(res=>{
+axios.delete(`${url}/api/document/${id}`, {
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+}).then(res=>{
     message.success("rasm o`chirildi")
     getdocument()
 }).catch(err=>{
@@ -32,7 +36,11 @@ const showModal = () => {
 const handleOk = () => {
 var data =new FormData()
 data.append("image",document.querySelector('#modal_data_file').files[0])
-axios.post(`${url}/api/document`,data).then(res=>{
+axios.post(`${url}/api/document`,data, {
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+}).then(res=>{
     handleCancel()
     message.success("yangi rasm joylandi")
     getdocument()
@@ -50,7 +58,11 @@ const showModal1 = () => {
   const handleOk1 = () => {
   var data =new FormData()
   data.append("image",document.querySelector('#modal_data_file1').files[0])
-  axios.put(`${url}/api/document/${select_id}`,data).then(res=>{
+  axios.put(`${url}/api/document/${select_id}`,data, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  }).then(res=>{
       handleCancel1()
       message.success("Yangi rasmga o`zgartitildi")
       getdocument()

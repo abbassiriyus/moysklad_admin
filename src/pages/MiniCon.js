@@ -51,7 +51,11 @@ setTop(res.data)
   function postTop() {
     var data=new FormData()
     data.append('dollor',document.querySelector('.InputcategoryId41').value)
-    axios.post(`${url}/api/dolor_course`,data).then(res=>{
+    axios.post(`${url}/api/dolor_course`,data, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(res=>{
     getTop()
     message.success("bajarildi")
     handleCancel()
@@ -67,7 +71,11 @@ message.error("not create top category")
   function postBest() {
     var data=new FormData()
     data.append('token',document.querySelector('.InputcategoryId21').value)
-    axios.post(`${url}/api/tokensklad`,data).then(res=>{
+    axios.post(`${url}/api/tokensklad`,data, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(res=>{
     getBest()
     message.success("bajarildi")
     handleCancel1()
@@ -79,7 +87,11 @@ message.error("not create top category")
 function putTop() {
   var data=new FormData()
   data.append('dollor',document.querySelector('.InputcategoryId31').value)
-  axios.put(`${url}/api/dolor_course/${top[0].id}` , data).then(res=>{
+  axios.put(`${url}/api/dolor_course/${top[0].id}` , data, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  }).then(res=>{
   getTop()
   message.success("bajarildi")
   handleCancel()
@@ -90,7 +102,11 @@ message.error("not create top category")
 function putBest() {
   var data=new FormData()
     data.append('token',document.querySelector('.InputcategoryId11').value)
-    axios.put(`${url}/api/tokensklad/${Best[0].id}`,data).then(res=>{
+    axios.put(`${url}/api/tokensklad/${Best[0].id}`,data, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(res=>{
     getBest()
     message.success("bajarildi")
     handleCancel1()

@@ -35,7 +35,7 @@ function loginIn() {
   data.append("login",document.querySelector("#email").value)
   data.append("password",document.querySelector("#parol").value)
   axios.post(`${url}/auth/login`,data).then(res=>{
-    sessionStorage.setItem('token',res.data.access)
+    sessionStorage.setItem('token',res.data.token)
    setTimeout(() => {
     window.location.reload()
    }, 1000);

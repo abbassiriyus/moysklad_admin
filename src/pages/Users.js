@@ -53,7 +53,11 @@ data.append("subcategory", 0)
 data.append("category_title",document.querySelector('.InputCategoryTitle').value )
 data.append("image", document.querySelector('#modal_data_file').files[0])
 
-axios.post(`${url}/api/category`,data).then(res=>{
+axios.post(`${url}/api/category`,data, {
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+}).then(res=>{
 
 message.success("Category yaratildi")
 handleCancel()
@@ -95,7 +99,11 @@ const handleOk1 = () => {
   }
  
   
-  axios.put(`${url}/api/category/${selectid.id}`,data).then(res=>{
+  axios.put(`${url}/api/category/${selectid.id}`,data, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  }).then(res=>{
   
   message.success("Category o`zgartitildi")
   handleCancel1()
@@ -110,7 +118,11 @@ const handleCancel1 = () => {
 };
 
 const handleOk2 = () => {
-  axios.delete(`${url}/api/category/${selectid}`).then(res=>{
+  axios.delete(`${url}/api/category/${selectid}`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  }).then(res=>{
 getData()
 handleCancel2()
   }).catch(err=>{
@@ -125,7 +137,7 @@ const handleCancel2 = () => {
 var [data_all,setAll]=useState([])
 
 var getallCategory=()=>{
-axios.get(`${url}//api/category/all`).then(res=>{
+axios.get(`${url}/api/category/all`).then(res=>{
 setAll(res.data)
 }).catch(err=>{
 message.error("not get all category")

@@ -49,7 +49,11 @@ data.append("youtobe",document.querySelector(".InputYoutube").value )
 data.append("instagram",document.querySelector('.InputInstagram').value )
 data.append("image", document.querySelector('#modal_data_file').files[0])
 
-axios.post(`${url}/api/company`,data).then(res=>{
+axios.post(`${url}/api/company`,data, {
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+}).then(res=>{
   message.success("Companiya yaratildi")
   handleCancel()
   getCompany()
@@ -72,7 +76,11 @@ handleCancel()
     data.append("instagram",document.querySelector('.InputInstagram1').value )
     data.append("image", document.querySelector("#data_put_image").files[0])
     
-    axios.put(`${url}/api/company/${company[0].id}`,data).then(res=>{
+    axios.put(`${url}/api/company/${company[0].id}`,data, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(res=>{
       message.success("Companiya yaratildi")
       handleCancel()
       getCompany()
