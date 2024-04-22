@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import url from './host';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Modal, message,Table } from 'antd';
+import { Button, Form, Input, Modal, message,Table, Image } from 'antd';
 const columns = [
   {
     title: 'id',
@@ -41,14 +41,14 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 const showModal = () => {
   setIsModalOpen(true);
 };
-var [file1,setFile]=useState()
+
 
 
 const handleOk = () => {
 var data=new FormData()
 console.log(formItemLayout);
 data.append("category_id",document.querySelector('.InputcategoryId').value )
-data.append("subcategory", 0)
+data.append("subcategory", subCategory)
 
 data.append("category_title",document.querySelector('.InputCategoryTitle').value )
 data.append("image", document.querySelector('#modal_data_file').files[0])
@@ -89,7 +89,7 @@ const handleOk1 = () => {
   var data=new FormData()
   console.log(formItemLayout);
   data.append("category_id",document.querySelector('.InputcategoryId1').value )
-  data.append("subcategory", 0)
+  data.append("subcategory", subCategory)
   
   data.append("category_title",document.querySelector('.InputCategoryTitle1').value )
   if(document.querySelector('#modal_data_file1').files[0]){
@@ -97,8 +97,7 @@ const handleOk1 = () => {
   }else{
     data.append("image", selectid.image)
   }
- 
-  
+
   axios.put(`${url}/api/category/${selectid.id}`,data, {
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -143,33 +142,76 @@ setAll(res.data)
 message.error("not get all category")
 })
 }
+var [dataSource2,setDataSourcle2]=useState([])
 
+function getSubCategory(id) {
+  var a=[...data]
+ var d=a.filter(item=>(item.subcategory==id))
+  setDataSourcle2(d)
+}
+
+const columns2 = [
+  {
+    title: 'id',
+    dataIndex: 'id',
+    key: 'id',
+  },
+  {
+    title: 'Category_title',
+    dataIndex: 'category_title',
+    key: 'category_title',
+  },
+  {
+    title: 'Image',
+    dataIndex: 'image',
+    render:(_,item)=><><Image style={{width:'50px'}} src={item.image} alt="" /></>
+  },
+  {
+    title: 'delete',
+    dataIndex: 'delete',
+    render:(_,item)=><><Button danger onClick={()=>{setSelectId(item.id);setIsModalOpen2(true)}} >Delete</Button></>
+  },
+  {
+    title: 'edit',
+    dataIndex: 'edit',
+    render:(_,item)=><><Button onClick={()=>{setSelectId(item);setIsModalOpen1(true)}} type="dashed" >Edit</Button></>
+  },
+];
  useEffect(()=>{
   getData()
   getallCategory()
  },[])
 
 
-
+var [subCategory,setSubCategory]=useState(0)
   return (
     <div>
 <Button type="primary" onClick={showModal}>
-      Create Category
+      Create {subCategory==0?('Category'):('SubCategory')}
       </Button>
 
-<div className="category_cards">
+     {subCategory!==0?(<>
+      <Button onClick={()=>{setSubCategory(0)}} style={{marginLeft:'20px'}} type="primary">Ortga</Button>
+   <h2 style={{marginTop:'20px'}}>Subcategoriya</h2><br />
+     <Table dataSource={dataSource2} columns={columns2} /></>):(<> <h2 style={{marginTop:'20px'}}>Categoriya</h2><br /><div className="category_cards">
+     
  {data.map((item,key)=>{
- return <div className="category_card">
-    <img src={item.image} alt="no image" />
-    <h3 className="title">{item.category_title}</h3>
-    <p className='id'>{item.category_id}</p>
+  if(item.subcategory==0){
+    return <div  className="category_card">
+    <img src={item.image} onClick={()=>{setSubCategory(item.id);getSubCategory(item.id)}} alt="no image" />
+    <h3 className="title" onClick={()=>{setSubCategory(item.id);getSubCategory(item.id)}}>{item.category_title}</h3>
+    <p className='id' onClick={()=>{setSubCategory(item.id);getSubCategory(item.id)}}>{item.category_id}</p>
    <div className='icons'><DeleteOutlined onClick={()=>{setSelectId(item.id);setIsModalOpen2(true)}} style={{cursor:'pointer'}} /> <EditOutlined style={{cursor:'pointer'}} onClick={()=>{setSelectId(item);setIsModalOpen1(true)}}  /></div> 
   </div> 
+  }
+ 
 })}
-</div>
+</div></>
+)} 
+
 <h4>Moysklad dasturidagi barcha kategoriyalar va idlari</h4>
 <Table dataSource={data_all} columns={columns} />
-<Modal title="Create Category" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+<Modal title={subCategory==0?('Create Category'):('Create SubCategory')} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
       <Form
     {...formItemLayout}
     variant="filled"
