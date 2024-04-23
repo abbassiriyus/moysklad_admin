@@ -10,6 +10,7 @@ import {
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import GlCategory from './GlCategory';
 import url from './host';
 const formItemLayout = {
   labelCol: {
@@ -262,6 +263,7 @@ getCompany()
 
       )}
       
+  <GlCategory/>
       <Modal title="Create Company" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
       <Form
     {...formItemLayout}
