@@ -62,6 +62,7 @@ axios.post(`${url}/api/category`,data, {
 message.success("Category yaratildi")
 handleCancel()
 getData()
+
 }).catch(err=>{
 message.error("xato qayta urunib ko`ring")
 handleCancel()
@@ -75,7 +76,6 @@ const handleCancel = () => {
 function getData() {
   axios.get(`${url}/api/category`).then(res=>{
     setData(res.data)
-    console.log(res.data);
   }).catch(err=>{
     message.error("don`t get category")
   })
@@ -138,6 +138,7 @@ var [data_all,setAll]=useState([])
 var getallCategory=()=>{
 axios.get(`${url}/api/category/all`).then(res=>{
 setAll(res.data)
+
 }).catch(err=>{
 message.error("not get all category")
 })
@@ -331,6 +332,7 @@ var [subCategory,setSubCategory]=useState(0)
       <Modal title="Delete Category" open={isModalOpen2} onOk={handleOk2} onCancel={handleCancel2}>
         <p>Siz O`chirayapgan ma`lumot sayt uchun axamiyatli bo`lishi mumkin. rostdan ham o`chirasizmi </p>
       </Modal>
+
 
     </div>
   )
