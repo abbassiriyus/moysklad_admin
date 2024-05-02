@@ -3,6 +3,8 @@ import { Button, Form, Input, Modal, message } from 'antd';
 import url from './host';
 import axios from 'axios';
 import Carousel from './Carousel';
+import Homiy from './Homiy';
+
 import Document1 from "./Document1.js"
 import MinCon from "./MiniCon.js" 
 const formItemLayout = {
@@ -168,7 +170,7 @@ useEffect(()=>{
   <MinCon/> 
      <Document1/>
      <Carousel/>
- 
+ <Homiy/>
       <br />
       <Modal title="Basic Modal" open={isModalOpen1} onOk={postTop} onCancel={handleCancel1}>
       <Form
