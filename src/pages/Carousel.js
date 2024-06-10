@@ -35,6 +35,7 @@ const showModal = () => {
 };
 const handleOk = () => {
 var data =new FormData()
+data.append('title',document.querySelectorAll('.title_ss')[0].value)
 data.append("image",document.querySelector('#modal_data_file').files[0])
 axios.post(`${url}/api/carousel`,data, {
   headers: {
@@ -57,6 +58,7 @@ const showModal1 = () => {
   };
   const handleOk1 = () => {
   var data =new FormData()
+  data.append('title',document.querySelectorAll('.title_ss')[1].value)
   data.append("image",document.querySelector('#modal_data_file1').files[0])
   axios.put(`${url}/api/carousel/${select_id}`,data, {
       headers: {
@@ -84,6 +86,7 @@ const showModal1 = () => {
 <div className="carousel_images">
     {carusel_image.map((item,key)=>{
         return <div key={key} className='carousel_card'  >
+          <h3>{item.title}</h3>
             <img src={item.image} alt="" /><br />
             <Button  type="primary" onClick={()=>{showModal1();setSelectId(item.id)}} >edit</Button> <Button onClick={()=>DeleteCarousel(item.id)} danger>delete</Button>
         </div>
@@ -94,7 +97,10 @@ const showModal1 = () => {
 
       <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
      <Form>
+      <p>title</p>
+      <input type="text" className='title_ss' />
      <Form.Item label="Image" valuePropName="fileList">
+      
     <div className='file_input' listType="picture-card"> 
       <input type="file" className='get_datainput' id="modal_data_file" />
             <button
@@ -120,7 +126,10 @@ const showModal1 = () => {
 
       <Modal title="Basic Modal" open={isModalOpen1} onOk={handleOk1} onCancel={handleCancel1}>
      <Form>
+     <p>title</p>
+     <input type="text" className='title_ss' />
      <Form.Item label="Image" valuePropName="fileList">
+
     <div className='file_input' listType="picture-card"> 
       <input type="file" className='get_datainput' id="modal_data_file1" />
             <button
