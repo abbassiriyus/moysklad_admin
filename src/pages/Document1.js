@@ -35,7 +35,7 @@ const showModal = () => {
 };
 const handleOk = () => {
 var data =new FormData()
-data.append("image",document.querySelector('#modal_data_file').files[0])
+data.append("image",document.querySelector('#modal_data_file').value)
 axios.post(`${url}/api/document`,data, {
   headers: {
     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -57,7 +57,7 @@ const showModal1 = () => {
   };
   const handleOk1 = () => {
   var data =new FormData()
-  data.append("image",document.querySelector('#modal_data_file1').files[0])
+  data.append("image",document.querySelector('#modal_data_file1').value)
   axios.put(`${url}/api/document/${select_id}`,data, {
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -95,52 +95,22 @@ const showModal1 = () => {
 
       <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
      <Form>
-     <Form.Item label="Image" valuePropName="fileList">
-    <div className='file_input' listType="picture-card"> 
-      <input type="file" className='get_datainput' id="modal_data_file" />
-            <button
-              style={{
-                border: 0,
-                background: 'none',
-              }}
-              type="button"
-            >
-              <PlusOutlined />
-              <div
-                style={{
-                  marginTop: 8,
-                }}
-              >
-                Upload
-              </div>
-            </button>
-          </div>
+     <Form.Item>
+
+      <input type="text" className='get_datainput1' id="modal_data_file" />
+        
+        
         </Form.Item>
      </Form>
       </Modal>
 
       <Modal title="Basic Modal" open={isModalOpen1} onOk={handleOk1} onCancel={handleCancel1}>
      <Form>
-     <Form.Item label="Image" valuePropName="fileList">
-    <div className='file_input' listType="picture-card"> 
-      <input type="file" className='get_datainput' id="modal_data_file1" />
-            <button
-              style={{
-                border: 0,
-                background: 'none',
-              }}
-              type="button"
-            >
-              <PlusOutlined />
-              <div
-                style={{
-                  marginTop: 8,
-                }}
-              >
-                Upload
-              </div>
-            </button>
-          </div>
+     <Form.Item>
+ 
+      <input type="text" className='get_datainput1' id="modal_data_file1" />
+         
+        
         </Form.Item>
      </Form>
       </Modal>

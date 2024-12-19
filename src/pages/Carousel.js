@@ -7,6 +7,11 @@ export default function Carousel() {
 var [carusel_image,setCarouselImage]=useState([])
 
 
+
+
+
+
+
 function getCarousel() {
     axios.get(`${url}/api/carousel`).then(res=>{
 setCarouselImage(res.data)
@@ -26,16 +31,40 @@ axios.delete(`${url}/api/carousel/${id}`, {
 }
 useEffect(()=>{
 getCarousel()
+getAllCategory()
 },[])
 const [isModalOpen, setIsModalOpen] = useState(false);
 const [isModalOpen1, setIsModalOpen1] = useState(false);
+const [isChecked, setIsChecked] = useState(false);
+var [allCategory,setAllCategory]=useState([])
+var [select_key,setSelectKey]=useState(0)
+
+
+function getAllCategory() {
+  axios.get(`${url}/api/category/all`).then(res=>{
+    setAllCategory(res.data)
+  })
+}
+
+const handleCheckboxChange = (event) => {
+  setIsChecked(event.target.checked);
+};
 
 const showModal = () => {
   setIsModalOpen(true);
 };
 const handleOk = () => {
 var data =new FormData()
-data.append('title',document.querySelectorAll('.title_ss')[0].value)
+
+console.log(document.querySelector('#title_ss_11').value);
+console.log(isChecked);
+if(isChecked){
+ data.append('title',document.querySelector('#title_ss__12').value) 
+}else{
+ data.append('title',allCategory[document.querySelector('#title_ss_11').value].name) 
+
+}
+data.append('category_id',allCategory[document.querySelector('#title_ss_11').value].id)
 data.append("image",document.querySelector('#modal_data_file').files[0])
 axios.post(`${url}/api/carousel`,data, {
   headers: {
@@ -58,7 +87,13 @@ const showModal1 = () => {
   };
   const handleOk1 = () => {
   var data =new FormData()
-  data.append('title',document.querySelectorAll('.title_ss')[1].value)
+  if(isChecked){
+   data.append('title',document.querySelector('#title_ss_22').value)
+  }else{
+    data.append('title',allCategory[document.querySelector('#title_ss_21').value].name)
+   
+  }
+   data.append('category_id',allCategory[document.querySelector('#title_ss_21').value].id)
   data.append("image",document.querySelector('#modal_data_file1').files[0])
   axios.put(`${url}/api/carousel/${select_id}`,data, {
       headers: {
@@ -88,17 +123,34 @@ const showModal1 = () => {
         return <div key={key} className='carousel_card'  >
           <h3>{item.title}</h3>
             <img src={item.image} alt="" /><br />
-            <Button  type="primary" onClick={()=>{showModal1();setSelectId(item.id)}} >edit</Button> <Button onClick={()=>DeleteCarousel(item.id)} danger>delete</Button>
+            <Button  type="primary" onClick={()=>{
+              showModal1();
+              setSelectId(item.id);
+              allCategory.map((item2,key2)=>{
+if(item.category_id===item2.id){
+  setSelectKey(key2)
+}
+              })}} >edit</Button> <Button onClick={()=>DeleteCarousel(item.id)} danger>delete</Button>
         </div>
     })}
 </div>
 
 
 
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="Asosiy oynadagi reklamali oyna yaratish" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
      <Form>
       <p>title</p>
-      <input type="text" className='title_ss' />
+      <input type="checkbox" id='chackbox_1'  checked={isChecked}
+        onChange={handleCheckboxChange} /> qayta nomlash <br />
+      <input placeholder='nom kiriting' style={{ display: isChecked ? 'block' : 'none' }} type="text" className='title_ss' id='title_ss__12' />
+      <br />
+      <p>Group</p>
+      <select name="" className='title_ss'  id="title_ss_11">
+       {allCategory.map((item,key)=>{
+        return <option value={key}>{item.pathName.length>0?item.pathName+" > ":""}{item.name}</option>
+       })} 
+        
+      </select>
      <Form.Item label="Image" valuePropName="fileList">
       
     <div className='file_input' listType="picture-card"> 
@@ -124,10 +176,21 @@ const showModal1 = () => {
      </Form>
       </Modal>
 
-      <Modal title="Basic Modal" open={isModalOpen1} onOk={handleOk1} onCancel={handleCancel1}>
+      <Modal title="Tanlanganni  o`zgartirish" open={isModalOpen1} onOk={handleOk1} onCancel={handleCancel1}>
      <Form>
      <p>title</p>
-     <input type="text" className='title_ss' />
+     <input type="checkbox" id='chackbox_1'  checked={isChecked}
+        onChange={handleCheckboxChange} /> qayta nomlash <br />
+     <input type="text" defaultValue={allCategory[select_key]?allCategory[select_key].name:''} className='title_ss' id='title_ss_22' placeholder='nom kiriting' style={{ display: isChecked ? 'block' : 'none' }} />
+     <br />
+     <p>Group</p>
+      <select name="" className='title_ss' defaultValue={select_key}  id="title_ss_21">
+       {allCategory.map((item,key)=>{
+        return <option value={key}>{item.pathName.length>0?item.pathName+" > ":""}{item.name}</option>
+       })} 
+       
+        
+      </select>
      <Form.Item label="Image" valuePropName="fileList">
 
     <div className='file_input' listType="picture-card"> 
