@@ -3,16 +3,9 @@ import React, { useEffect, useState } from 'react';
 import url from './host';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, message, Table, Image } from 'antd';
-const columns = [
-  {
-    title: 'id',
-    dataIndex: 'id',
-  },
-  {
-    title: 'name',
-    dataIndex: 'name',
-  },
-];
+import { CiStar } from "react-icons/ci";
+import { FaKickstarterK } from "react-icons/fa";
+
 
 
 
@@ -112,6 +105,7 @@ if (ischecked) {
       message.success("Category o`zgartitildi")
       handleCancel1()
       getData()
+      getSubCategory(selectid)
     }).catch(err => {
       message.error("xato qayta urunib ko`ring")
       handleCancel1()
@@ -156,6 +150,28 @@ if (ischecked) {
     setDataSourcle2(d)
   }
 
+
+  const columns = [
+    {
+      title: 'id',
+      dataIndex: 'id',
+    },
+    {
+      title: 'Categorya Nomi',
+      dataIndex: 'category_title',
+    },
+    {
+      title: 'type',
+      render: (_, item) => {
+          return item.subcategory === 0 ? <div><FaKickstarterK /></div> : <><CiStar /> <CiStar /></>;
+      },
+  },
+    {
+      title: 'Delete',
+      render: (_,item)=><Button danger onClick={() => { setSelectId(item.id); setIsModalOpen2(true) }} >Delete</Button>,
+    },
+  ];
+
   const columns2 = [
     {
       title: 'id',
@@ -180,7 +196,7 @@ if (ischecked) {
     {
       title: 'edit',
       dataIndex: 'edit',
-      render: (_, item) => <><Button onClick={() => { setSelectId(item); setIsModalOpen1(true) }} type="dashed" >Edit</Button></>
+      render: (_, item) => <><Button onClick={() => {setSelectId(item); setIsModalOpen1(true) }} type="dashed" >Edit</Button></>
     },
   ];
   useEffect(() => {
@@ -188,7 +204,7 @@ if (ischecked) {
     getallCategory()
   }, [])
 
-
+var [keyedit,setKeyEdit]=useState(0)
   var [subCategory, setSubCategory] = useState(0)
   return (
     <div>
@@ -207,7 +223,14 @@ if (ischecked) {
                 <img src={item.image} onClick={() => { setSubCategory(item.id); getSubCategory(item.id) }} alt="no image" />
                 <h3 className="title" onClick={() => { setSubCategory(item.id); getSubCategory(item.id) }}>{item.category_title}</h3>
                 <p className='id' onClick={() => { setSubCategory(item.id); getSubCategory(item.id) }}>{item.category_id}</p>
-                <div className='icons'><DeleteOutlined onClick={() => { setSelectId(item.id); setIsModalOpen2(true) }} style={{ cursor: 'pointer' }} /> <EditOutlined style={{ cursor: 'pointer' }} onClick={() => { setSelectId(item); setIsModalOpen1(true) }} /></div>
+                <div className='icons'><DeleteOutlined onClick={() => { setSelectId(item.id); setIsModalOpen2(true) }} style={{ cursor: 'pointer' }} /> <EditOutlined style={{ cursor: 'pointer' }} onClick={() => { setSelectId(item); setIsModalOpen1(true);data_all.map((item2,key2)=>{
+                  if(item2.id==item.category_id){
+                   setKeyEdit(key2)
+                   console.log(item2);
+                   
+                  }
+                })
+                 }} /></div>
               </div>
             }
 
@@ -266,7 +289,7 @@ if (ischecked) {
           }}
         >
           <p>Categoryni tanlang</p>
-          <select className='select_23' name="" id="InputcategoryId__24">
+          <select className='select_23' name="" defaultValue={keyedit} id="InputcategoryId__24">
             {data_all.map((item, key) => {
               return <option value={key}>{item.pathName.length > 0 ? item.pathName + " > " : ""}{item.name}</option>
             })}
@@ -302,7 +325,7 @@ if (ischecked) {
         </Form>
       </Modal>
 
-
+<Table columns={columns} dataSource={data}/>
       <Modal title="Delete Category" open={isModalOpen2} onOk={handleOk2} onCancel={handleCancel2}>
         <p>Siz O`chirayapgan ma`lumot sayt uchun axamiyatli bo`lishi mumkin. rostdan ham o`chirasizmi </p>
       </Modal>

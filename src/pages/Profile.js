@@ -7,6 +7,8 @@ import Homiy from './Homiy';
 
 import Document1 from "./Document1.js"
 import MinCon from "./MiniCon.js" 
+import Toptovar from './Toptovar.js';
+import KopSotilganlar from './KopSotilganlar.js';
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -109,22 +111,9 @@ useEffect(()=>{
     <div>
       
 
-      {Best.length==0?(<Button type="primary" onClick={showModal}> Eng kop sotilgan categoriyasi
-      </Button>):(
-        <Form.Item
-      label="kop sotilganla"
-      name="InputcategoryId"
-      rules={[
-        {
-          required: true,
-          message: 'Iltimos Category IDni kiriting!',
-        },
-      ]}
-    >
-      <Input defaultValue={Best[0].category_id} className='InputcategoryId1' />
-      <Button onClick={()=>{putBest()}} type="primary" style={{marginTop:'10px'}}>kop sotiladigan</Button>
-    </Form.Item>
-      )}
+  <span> Kop Sotilgan:</span>
+     <KopSotilganlar/>
+    
        
        <br />
       <Modal title="Basic Modal" open={isModalOpen} onOk={postBest} onCancel={handleCancel}>
@@ -150,23 +139,7 @@ useEffect(()=>{
 
 </Form>
       </Modal>
-{top.length==0?( <Button  style={{marginTop:'10px'}} type="primary" onClick={showModal1}>
-        Top Tavarlar
-      </Button>):(
-         <Form.Item
-         label="Top Tovarlar"
-         name="InputcategoryId"
-         rules={[
-           {
-             required: true,
-             message: 'Iltimos Category IDni kiriting!',
-           },
-         ]}
-       >
-         <Input  defaultValue={top[0].category_id} className='InputcategoryId3' />
-      <Button style={{marginTop:'10px'}} onClick={()=>putTop()} type="primary">Top Tovarlar</Button>
-       </Form.Item>
-      )}
+<span>Top Tovarlar:</span><Toptovar/>
   <MinCon/> 
      <Document1/>
      <Carousel/>
