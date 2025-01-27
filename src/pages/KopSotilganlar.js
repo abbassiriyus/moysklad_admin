@@ -48,7 +48,7 @@ getAllCategory()
   return (<>
    {locading?(<div>
 <select className='toptovar_selelct' onChange={(e)=>EditData(e)} value={key_1} name="" id="">
-    {AllCategory.map((item,key)=>{
+    {AllCategory && AllCategory.length > 0 && AllCategory.map((item,key)=>{
         return <option  value={item.id}>{item.pathName.length>0?item.pathName+">":""}{item.name}</option>
     })} 
 </select>

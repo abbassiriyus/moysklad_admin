@@ -146,7 +146,7 @@ if(item.category_id===item2.id){
       <br />
       <p>Group</p>
       <select name="" className='title_ss'  id="title_ss_11">
-       {allCategory.map((item,key)=>{
+       {allCategory && allCategory.length > 0 && allCategory.map((item,key)=>{
         return <option value={key}>{item.pathName.length>0?item.pathName+" > ":""}{item.name}</option>
        })} 
         
@@ -185,7 +185,7 @@ if(item.category_id===item2.id){
      <br />
      <p>Group</p>
       <select name="" className='title_ss' defaultValue={select_key}  id="title_ss_21">
-       {allCategory.map((item,key)=>{
+       {allCategory && allCategory.length > 0 && allCategory.map((item,key)=>{
         return <option value={key}>{item.pathName.length>0?item.pathName+" > ":""}{item.name}</option>
        })} 
        

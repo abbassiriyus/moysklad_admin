@@ -9,6 +9,8 @@ var [AllCategory,setAllCategory]=useState([])
 var [key_1,setKey_1]=useState(0)
     function getAllCategory() {
         axios.get(`${url}/api/category/all`).then(res=>{
+            console.log(res.data);
+            
           setAllCategory(res.data)
 axios.get(`${url}/api/top_tovar`).then(res2=>{
 if(res2.data.length>0){
@@ -16,7 +18,15 @@ setKey_1(res2.data[0].category_id)
 
 }
 
-})})}
+}).catch(err=>{
+console.log(err);
+
+})
+}).catch(err=>{
+console.log(err);
+    
+})
+}
 
 function EditData(e) {
     var data= new FormData
@@ -48,9 +58,13 @@ getAllCategory()
     <div>
         
 <select className='toptovar_selelct' onChange={(e)=>EditData(e)} value={key_1} name="" id="">
-    {AllCategory.map((item,key)=>{
-        return <option  value={item.id}>{item.pathName.length>0?item.pathName+">":""}{item.name}</option>
-    })} 
+{AllCategory && AllCategory.length > 0 && AllCategory.map((item, key) => {
+    return (
+        <option key={key} value={item.id}>
+            {item.pathName.length > 0 ? item.pathName + " > " : ""}{item.name}
+        </option>
+    );
+})}
 </select>
 
 

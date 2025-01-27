@@ -249,7 +249,7 @@ var [keyedit,setKeyEdit]=useState(0)
         >
           <p>Categoryni tanlang</p>
           <select className='select_23' name="" id="InputcategoryId__24">
-            {data_all.map((item, key) => {
+            {data_all && data_all.length > 0 && data_all.map((item, key) => {
               return <option value={key}>{item.pathName.length > 0 ? item.pathName + " > " : ""}{item.name}</option>
             })}
           </select>
@@ -290,7 +290,7 @@ var [keyedit,setKeyEdit]=useState(0)
         >
           <p>Categoryni tanlang</p>
           <select className='select_23' name="" defaultValue={keyedit} id="InputcategoryId__24">
-            {data_all.map((item, key) => {
+            {data_all && data_all.length > 0 && data_all.map((item, key) => {
               return <option value={key}>{item.pathName.length > 0 ? item.pathName + " > " : ""}{item.name}</option>
             })}
           </select>
